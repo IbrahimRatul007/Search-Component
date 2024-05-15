@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import SearchBar from "./components/SearchBar";
+
+const items = ["annay", "sabit", "shakib", "ratul", "arittra"];
 
 function App() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchHistory, setSearchHistory] = useState([]);
+
+  function handleFilter(e) {
+    e.preventDefault();
+    const filterItemsList = items.filter((item) => {
+      return item.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+    setSearchTerm("");
+    // if (searchHistory.includes(filterItemsList.map((item) => item))) return;
+    setSearchHistory((prev) => [filterItemsList, ...prev]);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <SearchBar
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        onHandleFilter={handleFilter}
+        searchHistory={searchHistory}
+      />
     </div>
   );
 }
